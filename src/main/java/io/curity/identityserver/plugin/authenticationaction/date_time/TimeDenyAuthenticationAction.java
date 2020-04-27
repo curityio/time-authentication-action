@@ -63,7 +63,7 @@ public final class TimeDenyAuthenticationAction extends AbstractDateTimeAuthenti
                 .toInstant();
         Instant now = Instant.now();
 
-        if (now.isAfter(startTime))
+        if (now.isAfter(startTime) || now.equals(startTime)) // Inclusive comparison
         {
             TimeConfiguration noAccessAfter = _configuration.getNoAccessAfter();
             Instant endTime = LocalDateTime.of(localDate,
@@ -72,7 +72,7 @@ public final class TimeDenyAuthenticationAction extends AbstractDateTimeAuthenti
                     .withZoneSameInstant(ZoneOffset.UTC)
                     .toInstant();
 
-            if (now.isBefore(endTime))
+            if (now.isBefore(endTime) || now.equals(endTime)) // Inclusive
             {
                 _logger.debug("Access allowed based on time");
 
