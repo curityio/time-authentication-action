@@ -13,10 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package io.curity.identityserver.plugin.authenticationaction.util;
 
-public enum TimeZoneDisplay {
+package io.curity.identityserver.plugin.authenticationaction.date_time;
 
+public enum TimeZoneDisplay
+{
     SYSTEM_TIME("SYSTEM_TIME"),
     Africa_Abidjan("Africa/Abidjan"),
     Africa_Accra("Africa/Accra"),
@@ -617,15 +618,15 @@ public enum TimeZoneDisplay {
     SST("SST"),
     VST("VST");
 
-
-    private TimeZoneDisplay(String timeZoneId) {
-        this.timeZoneId = timeZoneId;
+    TimeZoneDisplay(String timeZoneId)
+    {
+        _timeZoneId = timeZoneId;
     }
 
-    public String getTimeZone() {
-        return timeZoneId;
+    public String getTimeZone()
+    {
+        return _timeZoneId;
     }
 
-    private final String timeZoneId;
-
+    private final String _timeZoneId;
 }

@@ -14,15 +14,12 @@
  *  limitations under the License.
  */
 
-package io.curity.identityserver.plugin.descriptor;
+package io.curity.identityserver.plugin.authenticationaction.date_time;
 
-import io.curity.identityserver.plugin.authenticationaction.date.deny.DateDenyAuthenticationAction;
-import io.curity.identityserver.plugin.authenticationaction.date.deny.DateDenyAuthenticationActionConfiguration;
 import se.curity.identityserver.sdk.authenticationaction.AuthenticationAction;
 import se.curity.identityserver.sdk.plugin.descriptor.AuthenticationActionPluginDescriptor;
 
-
-public class DateDenyAuthenticationActionPluginDescriptor
+public final class DateDenyAuthenticationActionPluginDescriptor
         implements AuthenticationActionPluginDescriptor<DateDenyAuthenticationActionConfiguration>
 {
     @Override

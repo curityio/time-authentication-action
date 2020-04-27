@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~  Copyright 2020 Curity AB
   ~
@@ -22,8 +21,6 @@
     <groupId>io.curity.identityserver.plugin</groupId>
     <artifactId>identityserver.plugins.authenticationactions.time</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-
-
     <name>Time Based Authentication Action</name>
 
     <properties>
@@ -92,19 +89,6 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
-    <distributionManagement>
-        <repository>
-            <id>curity-release-repo</id>
-            <name>Curity Nexus Release Repository</name>
-            <url>https://nexus.curity.se/nexus/content/repositories/customer-release-repo/</url>
-        </repository>
-        <snapshotRepository>
-            <id>curity-snapshot-repo</id>
-            <name>Curity Nexus Snapshot Repository</name>
-            <url>https://nexus.curity.se/nexus/content/repositories/customer-snapshot-repo/</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <repositories>
       <repository>

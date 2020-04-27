@@ -1,6 +1,6 @@
 # Time Based Deny Authentication Action
 
-This repository contains 2 plugins for time based Actions in the Authentication flow.
+This repository contains two plugins for time based Actions in the Authentication flow.
 
 ## System Requirements
 
@@ -21,11 +21,25 @@ Both plugins will be packaged in one single jar.
 * Create an Action of type `Time Deny`
 * Add the action to the authenticator as a login action.
 * Configure the `No Access Before` and `No Access After` parameters to define when access should not be allowed.
-* Select a Time Zone that this action should apply to. The default is `system-time` and will use the System Time of the Curity server.
+* Select a time zone that this action should apply to. The default is `system-time` and will use the System Time of the Curity server.
+
+The `No Access Before` denotes the start time of any particular day in which access should be granted; the `No Access 
+After` denotes the end point on the same day. 
 
 ### Deny based on a given date and time
 * Create an Action of type `Date Time Deny`
 * Add the action to the authenticator as a login action.
-* Set `Date and Time`. Should be epoch time (https://www.unixtimestamp.com/).
+* Set `Date and Time`.
 * Choose if access should be denied before or after the configured date and time.
-* Select a Time Zone that this action should apply to. The default is `system-time` and will use the System Time of the Curity server.
+
+This action restricts access until a certain point on the timeline or, conversely, allows it until a certain point.
+
+## License
+
+This plugin and its associated documentation is listed under the [Apache 2 license](LICENSE).
+
+## More Information
+
+Please visit [curity.io](https://curity.io/) for more information about the Curity Identity Server.
+
+Copyright (C) 2020 Curity AB.
