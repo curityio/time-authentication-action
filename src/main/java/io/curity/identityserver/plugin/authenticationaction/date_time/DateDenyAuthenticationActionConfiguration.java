@@ -47,7 +47,7 @@ public interface DateDenyAuthenticationActionConfiguration extends Configuration
 
     @Description("Minute at which access should be allowed or denied")
     @DefaultInteger(0)
-    @RangeConstraint(min = 0, max = 60)
+    @RangeConstraint(min = 0, max = 59)
     int getMinute();
 
     @Description("Choose if access should be denied before or after the configured date")
