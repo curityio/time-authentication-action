@@ -30,7 +30,9 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public final class DateDenyAuthenticationAction extends AbstractDateTimeAuthenticationAction implements AuthenticationAction
+import static io.curity.identityserver.plugin.authenticationaction.date_time.ZoneIdUtil.getZoneId;
+
+public final class DateDenyAuthenticationAction implements AuthenticationAction
 {
     private final static Logger _logger = LoggerFactory.getLogger(DateDenyAuthenticationAction.class);
 

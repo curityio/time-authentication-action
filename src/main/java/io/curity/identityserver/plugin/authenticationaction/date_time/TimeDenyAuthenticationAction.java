@@ -31,7 +31,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.TimeZone;
 
 public final class TimeDenyAuthenticationAction implements AuthenticationAction
 {
@@ -83,8 +82,6 @@ public final class TimeDenyAuthenticationAction implements AuthenticationAction
     // Visible for testing
     static final class TimeComparer
     {
-        private final static Logger _logger = LoggerFactory.getLogger(TimeComparer.class);
-
         private final Instant _now;
         private final Instant _endTime;
         private final Instant _startTime;
@@ -108,7 +105,7 @@ public final class TimeDenyAuthenticationAction implements AuthenticationAction
         static TimeComparer create(TimeConfiguration noAccessBefore, TimeConfiguration noAccessAfter,
                                    TimeZoneDisplay timezone, Clock clock)
         {
-            ZoneId zoneId = getZoneId(timezone);
+            ZoneId zoneId = ZoneIdUtil.getZoneId(timezone);
             LocalDate localDate = LocalDate.now(clock);
             Instant startTime = LocalDateTime.of(localDate,
                     LocalTime.of(noAccessBefore.getHour(), noAccessBefore.getMinutes()))
@@ -153,27 +150,6 @@ public final class TimeDenyAuthenticationAction implements AuthenticationAction
         public ZoneId getZoneId()
         {
             return _zoneId;
-        }
-
-        static ZoneId getZoneId(TimeZoneDisplay configTimeZone)
-        {
-            ZoneId zoneId;
-
-            if (configTimeZone == TimeZoneDisplay.SYSTEM_TIME)
-            {
-                zoneId = TimeZone.getDefault().toZoneId();
-
-                _logger.trace("Using server system time");
-            }
-            else
-            {
-                String timeZone = configTimeZone.getTimeZone();
-                zoneId = TimeZone.getTimeZone(timeZone).toZoneId();
-
-                _logger.trace("Using configured timezone {}", timeZone);
-            }
-
-            return zoneId;
         }
     }
 }

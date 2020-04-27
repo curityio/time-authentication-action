@@ -22,11 +22,16 @@ import org.slf4j.LoggerFactory;
 import java.time.ZoneId;
 import java.util.TimeZone;
 
-public abstract class AbstractDateTimeAuthenticationAction
+final class ZoneIdUtil
 {
-    private final static Logger _logger = LoggerFactory.getLogger(AbstractDateTimeAuthenticationAction.class);
+    private final static Logger _logger = LoggerFactory.getLogger(ZoneIdUtil.class);
 
-    ZoneId getZoneId(TimeZoneDisplay configTimeZone)
+    private ZoneIdUtil()
+    {
+
+    }
+
+    static ZoneId getZoneId(TimeZoneDisplay configTimeZone)
     {
         ZoneId zoneId;
 
@@ -34,14 +39,14 @@ public abstract class AbstractDateTimeAuthenticationAction
         {
             zoneId = TimeZone.getDefault().toZoneId();
 
-            _logger.debug("Using server system time");
+            _logger.trace("Using server system time");
         }
         else
         {
             String timeZone = configTimeZone.getTimeZone();
             zoneId = TimeZone.getTimeZone(timeZone).toZoneId();
 
-            _logger.debug("Using configured timezone {}", timeZone);
+            _logger.trace("Using configured timezone {}", timeZone);
         }
 
         return zoneId;
