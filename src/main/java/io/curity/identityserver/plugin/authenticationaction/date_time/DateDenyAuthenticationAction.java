@@ -22,19 +22,13 @@ import se.curity.identityserver.sdk.attribute.AuthenticationAttributes;
 import se.curity.identityserver.sdk.authentication.AuthenticatedSessions;
 import se.curity.identityserver.sdk.authenticationaction.AuthenticationAction;
 import se.curity.identityserver.sdk.authenticationaction.AuthenticationActionResult;
-import se.curity.identityserver.sdk.service.SessionManager;
 import se.curity.identityserver.sdk.service.authenticationaction.AuthenticatorDescriptor;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
-import java.util.TimeZone;
 
 public final class DateDenyAuthenticationAction extends AbstractDateTimeAuthenticationAction implements AuthenticationAction
 {

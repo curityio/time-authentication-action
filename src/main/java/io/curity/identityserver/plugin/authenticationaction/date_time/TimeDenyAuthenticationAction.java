@@ -18,33 +18,31 @@ package io.curity.identityserver.plugin.authenticationaction.date_time;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.curity.identityserver.sdk.Nullable;
-import se.curity.identityserver.sdk.attribute.Attribute;
 import se.curity.identityserver.sdk.attribute.AuthenticationAttributes;
 import se.curity.identityserver.sdk.authentication.AuthenticatedSessions;
 import se.curity.identityserver.sdk.authenticationaction.AuthenticationAction;
 import se.curity.identityserver.sdk.authenticationaction.AuthenticationActionResult;
-import se.curity.identityserver.sdk.service.SessionManager;
 import se.curity.identityserver.sdk.service.authenticationaction.AuthenticatorDescriptor;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.TimeZone;
 
-public final class TimeDenyAuthenticationAction extends AbstractDateTimeAuthenticationAction implements AuthenticationAction
+public final class TimeDenyAuthenticationAction implements AuthenticationAction
 {
     private final static Logger _logger = LoggerFactory.getLogger(TimeDenyAuthenticationAction.class);
 
-    private final TimeDenyAuthenticationActionConfiguration _configuration;
+    private final TimeComparer _timeComparer;
 
     public TimeDenyAuthenticationAction(TimeDenyAuthenticationActionConfiguration configuration)
     {
-        _configuration = configuration;
+        _timeComparer = TimeComparer.create(configuration.getNoAccessBefore(), configuration.getNoAccessAfter(),
+                configuration.getTimeZone());
     }
 
     @Override
@@ -53,26 +51,9 @@ public final class TimeDenyAuthenticationAction extends AbstractDateTimeAuthenti
                                             String authenticationTransactionId,
                                             AuthenticatorDescriptor authenticatorDescriptor)
     {
-        ZoneId zoneId = getZoneId(_configuration.getTimeZone());
-        TimeConfiguration noAccessBefore = _configuration.getNoAccessBefore();
-        LocalDate localDate = LocalDate.now();
-        Instant startTime = LocalDateTime.of(localDate,
-                LocalTime.of(noAccessBefore.getHour(), noAccessBefore.getMinute()))
-                .atZone(zoneId)
-                .withZoneSameInstant(ZoneOffset.UTC)
-                .toInstant();
-        Instant now = Instant.now();
-
-        if (now.isAfter(startTime) || now.equals(startTime)) // Inclusive comparison
+        if (_timeComparer.isNowAfterStartTime())
         {
-            TimeConfiguration noAccessAfter = _configuration.getNoAccessAfter();
-            Instant endTime = LocalDateTime.of(localDate,
-                    LocalTime.of(noAccessAfter.getHour(), noAccessAfter.getMinute()))
-                    .atZone(zoneId)
-                    .withZoneSameInstant(ZoneOffset.UTC)
-                    .toInstant();
-
-            if (now.isBefore(endTime) || now.equals(endTime)) // Inclusive
+            if (_timeComparer.isNowBeforeEndTime())
             {
                 _logger.debug("Access allowed based on time");
 
@@ -80,18 +61,119 @@ public final class TimeDenyAuthenticationAction extends AbstractDateTimeAuthenti
             }
             else if (_logger.isDebugEnabled())
             {
+                ZoneId zoneId = _timeComparer.getZoneId();
+
                 _logger.debug(
                         "Access denied because current time {} in timezone {} is after the configured allowed end time {}",
-                        now.atZone(zoneId), zoneId, endTime.atZone(zoneId));
+                        _timeComparer.getNow().atZone(zoneId), zoneId, _timeComparer.getEndTime());
             }
         }
         else if (_logger.isDebugEnabled())
         {
+            ZoneId zoneId = _timeComparer.getZoneId();
+
             _logger.debug(
                     "Access denied because current time {} in timezone {} is after the configured allowed start time {}",
-                    now.atZone(zoneId), zoneId, startTime.atZone(zoneId));
+                    _timeComparer.getNow().atZone(zoneId), zoneId, _timeComparer.getStartTime());
         }
 
         return AuthenticationActionResult.failedResult("Access denied based on time");
+    }
+
+    // Visible for testing
+    static final class TimeComparer
+    {
+        private final static Logger _logger = LoggerFactory.getLogger(TimeComparer.class);
+
+        private final Instant _now;
+        private final Instant _endTime;
+        private final Instant _startTime;
+        private final ZoneId _zoneId;
+
+        private TimeComparer(Instant startTime, Instant endTime, Instant now, ZoneId zoneId)
+        {
+            _startTime = startTime;
+            _endTime = endTime;
+            _now = now;
+            _zoneId = zoneId;
+        }
+
+        static TimeComparer create(TimeConfiguration noAccessBefore, TimeConfiguration noAccessAfter,
+                                   TimeZoneDisplay timezone)
+        {
+            return create(noAccessBefore, noAccessAfter, timezone, Clock.systemDefaultZone());
+        }
+
+        // VisibleForTesting
+        static TimeComparer create(TimeConfiguration noAccessBefore, TimeConfiguration noAccessAfter,
+                                   TimeZoneDisplay timezone, Clock clock)
+        {
+            ZoneId zoneId = getZoneId(timezone);
+            LocalDate localDate = LocalDate.now(clock);
+            Instant startTime = LocalDateTime.of(localDate,
+                    LocalTime.of(noAccessBefore.getHour(), noAccessBefore.getMinutes()))
+                    .atZone(zoneId)
+                    .withZoneSameInstant(ZoneOffset.UTC)
+                    .toInstant();
+            Instant endTime = LocalDateTime.of(localDate,
+                    LocalTime.of(noAccessAfter.getHour(), noAccessAfter.getMinutes()))
+                    .atZone(zoneId)
+                    .withZoneSameInstant(ZoneOffset.UTC)
+                    .toInstant();
+            Instant now = Instant.now(clock);
+
+            return new TimeComparer(startTime, endTime, now, zoneId);
+        }
+
+        public boolean isNowAfterStartTime()
+        {
+            return _now.isAfter(_startTime) ||  _now.equals(_startTime);
+        }
+
+        public boolean isNowBeforeEndTime()
+        {
+            return _now.isBefore(_endTime) || _now.equals(_endTime);
+        }
+
+        public Instant getNow()
+        {
+            return _now;
+        }
+
+        public Instant getEndTime()
+        {
+            return _endTime;
+        }
+
+        public Instant getStartTime()
+        {
+            return _startTime;
+        }
+
+        public ZoneId getZoneId()
+        {
+            return _zoneId;
+        }
+
+        static ZoneId getZoneId(TimeZoneDisplay configTimeZone)
+        {
+            ZoneId zoneId;
+
+            if (configTimeZone == TimeZoneDisplay.SYSTEM_TIME)
+            {
+                zoneId = TimeZone.getDefault().toZoneId();
+
+                _logger.trace("Using server system time");
+            }
+            else
+            {
+                String timeZone = configTimeZone.getTimeZone();
+                zoneId = TimeZone.getTimeZone(timeZone).toZoneId();
+
+                _logger.trace("Using configured timezone {}", timeZone);
+            }
+
+            return zoneId;
+        }
     }
 }
