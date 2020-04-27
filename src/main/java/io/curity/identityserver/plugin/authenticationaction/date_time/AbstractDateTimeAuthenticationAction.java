@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import java.time.ZoneId;
 import java.util.TimeZone;
 
-public class AbstractDateTimeAuthenticationAction
+public abstract class AbstractDateTimeAuthenticationAction
 {
     private final static Logger _logger = LoggerFactory.getLogger(AbstractDateTimeAuthenticationAction.class);
 
