@@ -99,7 +99,7 @@ class TimeComparerTest extends Specification {
             }
 
             @Override
-            int getMinutes() {
+            int getMinute() {
                 return minutes
             }
 
