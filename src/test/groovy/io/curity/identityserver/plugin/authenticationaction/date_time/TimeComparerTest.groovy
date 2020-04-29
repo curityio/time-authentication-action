@@ -78,14 +78,14 @@ class TimeComparerTest extends Specification {
     }
 
     private static Clock c(TimeZoneDisplay timeZone, int year, int month, int day, int hour = 0, int minutes = 0) {
-        ZoneId zoneId = ZoneId.of(timeZone.getTimeZone());
+        ZoneId zoneId = ZoneIdUtil.getZoneId(timeZone)
         ZonedDateTime zonedDateTime = ZonedDateTime.of(year, month, day, hour, minutes, 0, 0, zoneId)
 
         return Clock.fixed(zonedDateTime.toInstant(), zoneId)
     }
 
     private static Clock c(TimeZoneDisplay timeZone, int hour = 0, int minutes = 0) {
-        ZoneId zoneId = ZoneId.of(timeZone.getTimeZone());
+        ZoneId zoneId = ZoneIdUtil.getZoneId(timeZone)
         def now = LocalDate.now(zoneId)
 
         return c(timeZone, now.year, now.monthValue, now.dayOfMonth, hour, minutes)
