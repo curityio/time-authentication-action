@@ -8,7 +8,7 @@ import java.time.ZoneId
 class ZoneIdUtilTest extends Specification {
 
     @Unroll
-    def "All time zones in Time Zone Display can be translated to a ZoneId"(){
+    def "#configTimeZone can be translated to a ZoneId"(){
         given: "A time zone with display name"
         def TimeZoneDisplay timeZoneDisplay = configTimeZone;
 

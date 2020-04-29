@@ -1,12 +1,10 @@
 package io.curity.identityserver.plugin.authenticationaction.date_time
 
-import org.apache.groovy.json.internal.Chr
 import se.curity.identityserver.sdk.authenticationaction.AuthenticationActionResult
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.time.Instant
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -17,16 +15,16 @@ class DateDenyAuthenticationActionTest extends Specification {
     static private Instant loginTime = Instant.now().truncatedTo(ChronoUnit.MINUTES);
 
     @Unroll
-    def "deny authentication #when (#configTime) #timeZone" () {
+    def "Deny authentication #when (#configTime) #timeZone" () {
         given: "Configuration and action"
         DateDenyAuthenticationActionConfiguration config = dc(configTime, timeZone, when)
         DateDenyAuthenticationAction action = new DateDenyAuthenticationAction(config);
 
-        when: "authentication is checked against action configuration"
+        when: "Authentication is checked against action configuration"
         AuthenticationActionResult result = action.apply(null, null, null, null);
 
 
-        then: "allow or deny access as expected"
+        then: "Allow or deny authentication as expected"
             ZoneId configZone = ZoneIdUtil.getZoneId(timeZone);
             ZonedDateTime zonedConfigTime = ZonedDateTime.ofInstant(configTime, configZone);
             ZonedDateTime zonedLoginTime = ZonedDateTime.ofInstant(loginTime, ZoneId.systemDefault());
