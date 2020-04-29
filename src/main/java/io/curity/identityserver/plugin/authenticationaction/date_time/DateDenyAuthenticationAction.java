@@ -59,18 +59,16 @@ public final class DateDenyAuthenticationAction implements AuthenticationAction
         ZonedDateTime currentDateTimeInZone = ZonedDateTime.now(zoneId);
 
         if (currentDateTimeInZone.isBefore(configuredDateTime) &&
-                _configuration.getDenyBeforeOrAfter() == DateDenyAuthenticationActionConfiguration.When.BEFORE &&
-                _logger.isDebugEnabled())
+                _configuration.getDenyBeforeOrAfter() == DateDenyAuthenticationActionConfiguration.When.BEFORE)
         {
-            _logger.debug("Access denied because current date {} is before date allowed by configuration {}",
-                    currentDateTimeInZone, configuredDateTime);
+                _logger.debug("Access denied because current date {} is before date allowed by configuration {}",
+                        currentDateTimeInZone, configuredDateTime);
         }
         else if (currentDateTimeInZone.isAfter(configuredDateTime) &&
-                _configuration.getDenyBeforeOrAfter() == DateDenyAuthenticationActionConfiguration.When.AFTER &&
-                _logger.isDebugEnabled())
+                _configuration.getDenyBeforeOrAfter() == DateDenyAuthenticationActionConfiguration.When.AFTER)
         {
-            _logger.debug("Access denied because current date {} is after date allowed by configuration {}",
-                    currentDateTimeInZone, configuredDateTime);
+                _logger.debug("Access denied because current date {} is after date allowed by configuration {}",
+                        currentDateTimeInZone, configuredDateTime);
         }
         else
         {
