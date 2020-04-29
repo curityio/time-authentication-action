@@ -1,6 +1,6 @@
 package io.curity.identityserver.plugin.authenticationaction.date_time
 
-
+import org.apache.groovy.json.internal.Chr
 import se.curity.identityserver.sdk.authenticationaction.AuthenticationActionResult
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -9,49 +9,55 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 class DateDenyAuthenticationActionTest extends Specification {
 
+    static private Instant loginTime = Instant.now().truncatedTo(ChronoUnit.MINUTES);
+
     @Unroll
-    def "Test if authentication is allowed before or after a configured time stamp." () {
-        given:
+    def "deny authentication #when (#configTime) #timeZone" () {
+        given: "Configuration and action"
         DateDenyAuthenticationActionConfiguration config = dc(configTime, timeZone, when)
         DateDenyAuthenticationAction action = new DateDenyAuthenticationAction(config);
 
-        when:
+        when: "authentication is checked against action configuration"
         AuthenticationActionResult result = action.apply(null, null, null, null);
 
-        ZoneId configZone = ZoneIdUtil.getZoneId(timeZone);
-        ZonedDateTime utcConfigTime = ZonedDateTime.of(configTime, configZone).withZoneSameInstant(ZoneId.of("UTC"));
-        ZonedDateTime utcNow = ZonedDateTime.of(loginTime, ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("UTC"));
 
-        then:
-        if (success) {
-            assert result instanceof AuthenticationActionResult.SuccessAuthenticationActionResult : "Now: $utcNow, Deny $when $utcConfigTime ($configTime)"
-        } else {
-            assert result instanceof AuthenticationActionResult.FailedAuthenticationActionResult : "Now: $utcNow, Deny $when $utcConfigTime ($configTime)"
-        }
+        then: "allow or deny access as expected"
+            ZoneId configZone = ZoneIdUtil.getZoneId(timeZone);
+            ZonedDateTime zonedConfigTime = ZonedDateTime.ofInstant(configTime, configZone);
+            ZonedDateTime zonedLoginTime = ZonedDateTime.ofInstant(loginTime, ZoneId.systemDefault());
+
+            String loginTimeUtc = zonedLoginTime.format(DateTimeFormatter.ISO_INSTANT);
+            String configTimeUtc = zonedConfigTime.format(DateTimeFormatter.ISO_INSTANT);
+            String configTimeOffset = zonedConfigTime.format(DateTimeFormatter.ISO_DATE_TIME);
+
+            assert success == (result instanceof AuthenticationActionResult.SuccessAuthenticationActionResult) : "Now: $loginTimeUtc, Deny $when $configTimeUtc ($configTimeOffset)"
 
         where:
-        loginTime           | configTime                           | timeZone                     | when                                                 | success
-        LocalDateTime.now() | loginTime.minusHours(1) | TimeZoneDisplay.SYSTEM_TIME  | DateDenyAuthenticationActionConfiguration.When.AFTER | false //no access after time stamp in past
-        LocalDateTime.now() | loginTime               | TimeZoneDisplay.SYSTEM_TIME  | DateDenyAuthenticationActionConfiguration.When.AFTER | false //no access from now
-        LocalDateTime.now() | loginTime.plusHours(1)   | TimeZoneDisplay.SYSTEM_TIME  | DateDenyAuthenticationActionConfiguration.When.AFTER | true  //no access after time stamp in future
-        LocalDateTime.now() | loginTime.minusHours(1).minusDays(1) | TimeZoneDisplay.SYSTEM_TIME  | DateDenyAuthenticationActionConfiguration.When.BEFORE| true //no access until time stamp in past
-        LocalDateTime.now() | loginTime                            | TimeZoneDisplay.SYSTEM_TIME  | DateDenyAuthenticationActionConfiguration.When.BEFORE| true //no access until now
-        LocalDateTime.now() | loginTime.plusHours(1).plusDays(2)   | TimeZoneDisplay.SYSTEM_TIME  | DateDenyAuthenticationActionConfiguration.When.BEFORE| false //no access until time stamp in future
-        LocalDateTime.now() | loginTime.plusHours(1).plusDays(2)   | TimeZoneDisplay.Europe_Stockholm | DateDenyAuthenticationActionConfiguration.When.AFTER | true //no access after time stamp in future (config in different time zone)
-        LocalDateTime.now() | loginTime.minusHours(1).plusDays(2)  | TimeZoneDisplay.Europe_Stockholm | DateDenyAuthenticationActionConfiguration.When.BEFORE | true //no access until time stamp in past (config in different time zone)
+            configTime                           | timeZone                       | when                                                  | success
+            loginTime.minus(1, ChronoUnit.HOURS) | TimeZoneDisplay.SYSTEM_TIME    | DateDenyAuthenticationActionConfiguration.When.AFTER  | false //no access after time stamp in past
+            loginTime                            | TimeZoneDisplay.SYSTEM_TIME    | DateDenyAuthenticationActionConfiguration.When.AFTER  | false //no access from now
+            loginTime.plus(1, ChronoUnit.HOURS)  | TimeZoneDisplay.SYSTEM_TIME    | DateDenyAuthenticationActionConfiguration.When.AFTER  | true  //no access after time stamp in future
+            loginTime.minus(1, ChronoUnit.DAYS)  | TimeZoneDisplay.SYSTEM_TIME    | DateDenyAuthenticationActionConfiguration.When.BEFORE | true //no access until time stamp in past
+            loginTime                            | TimeZoneDisplay.SYSTEM_TIME    | DateDenyAuthenticationActionConfiguration.When.BEFORE | true //no access until now
+            loginTime.plus(2, ChronoUnit.DAYS)   | TimeZoneDisplay.US_Pacific_New | DateDenyAuthenticationActionConfiguration.When.BEFORE | false //no access until time stamp in future
+            loginTime.plus(1, ChronoUnit.HOURS)  | TimeZoneDisplay.US_Pacific_New | DateDenyAuthenticationActionConfiguration.When.AFTER  | true //no access after time stamp in future (config in different time zone)
+            loginTime.minus(1, ChronoUnit.HOURS) | TimeZoneDisplay.US_Pacific_New | DateDenyAuthenticationActionConfiguration.When.BEFORE | true //no access until time stamp in past (config in different time zone)
     }
 
-    DateDenyAuthenticationActionConfiguration dc(LocalDateTime localTime, TimeZoneDisplay configTimeZone, DateDenyAuthenticationActionConfiguration.When when) {
+    DateDenyAuthenticationActionConfiguration dc(Instant timeStamp, TimeZoneDisplay configTimeZone, DateDenyAuthenticationActionConfiguration.When when) {
         ZoneId zoneId;
         if (configTimeZone == TimeZoneDisplay.SYSTEM_TIME) {
             zoneId = ZoneId.systemDefault();
         } else {
             zoneId = ZoneId.of(configTimeZone.getTimeZone());
         }
-        ZonedDateTime confTime = ZonedDateTime.of(localTime, zoneId);
+
+        ZonedDateTime confTime = ZonedDateTime.ofInstant(timeStamp, zoneId);
 
         return new DateDenyAuthenticationActionConfiguration() {
             @Override
