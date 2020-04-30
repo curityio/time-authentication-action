@@ -30,5 +30,5 @@ public interface TimeConfiguration
     @Description("Minute at which access should be allowed or denied")
     @DefaultInteger(0)
     @RangeConstraint(min = 0, max = 59)
-    int getMinutes();
+    int getMinute();
 }

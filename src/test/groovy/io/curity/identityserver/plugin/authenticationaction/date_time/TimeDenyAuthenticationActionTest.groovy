@@ -65,13 +65,13 @@ class TimeDenyAuthenticationActionTest extends Specification {
                     }
 
                     @Override
-                    int getMinutes() {
+                    int getMinute() {
                         return noAccessBeforeTime.getMinute();
                     }
 
                     @Override
                     String toString() {
-                        return String.format("%2d:%2d", getHour(), getMinutes());
+                        return String.format("%2d:%2d", getHour(), getMinute());
                     }
                 }
             }
@@ -85,13 +85,13 @@ class TimeDenyAuthenticationActionTest extends Specification {
                     }
 
                     @Override
-                    int getMinutes() {
+                    int getMinute() {
                         return noAccessAfterTime.getMinute();
                     }
 
                     @Override
                     String toString() {
-                        return String.format("%2d:%2d", getHour(), getMinutes());
+                        return String.format("%2d:%2d", getHour(), getMinute());
                     }
                 }
             }

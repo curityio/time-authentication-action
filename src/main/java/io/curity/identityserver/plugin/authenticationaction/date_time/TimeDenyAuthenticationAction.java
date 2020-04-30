@@ -108,11 +108,11 @@ public final class TimeDenyAuthenticationAction implements AuthenticationAction
             ZoneId zoneId = ZoneIdUtil.getZoneId(timezone);
             LocalDate localDate = LocalDate.now(clock);
             Instant startTime = LocalDateTime.of(localDate,
-                    LocalTime.of(noAccessBefore.getHour(), noAccessBefore.getMinutes()))
+                    LocalTime.of(noAccessBefore.getHour(), noAccessBefore.getMinute()))
                     .atZone(zoneId)
                     .toInstant();
             Instant endTime = LocalDateTime.of(localDate,
-                    LocalTime.of(noAccessAfter.getHour(), noAccessAfter.getMinutes()))
+                    LocalTime.of(noAccessAfter.getHour(), noAccessAfter.getMinute()))
                     .atZone(zoneId)
                     .toInstant();
             Instant now = Instant.now(clock);
