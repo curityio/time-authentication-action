@@ -20,7 +20,7 @@
 
     <groupId>io.curity.identityserver.plugin</groupId>
     <artifactId>identityserver.plugins.authenticationactions.time</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>Time Based Authentication Action</name>
 
     <properties>
@@ -67,7 +67,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${libraries.directory}</outputDirectory>
-                            <excludeScope>provided</excludeScope>
+                            <includeScope>runtime</includeScope>
                         </configuration>
                     </execution>
                 </executions>
