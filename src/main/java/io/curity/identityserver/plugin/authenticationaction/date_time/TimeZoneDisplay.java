@@ -320,7 +320,7 @@ public enum TimeZoneDisplay
     Asia_Pontianak("Asia/Pontianak"),
     Asia_Pyongyang("Asia/Pyongyang"),
     Asia_Qatar("Asia/Qatar"),
-    Asia_Qostanay("Asia/Qostanay"),
+//    Asia_Qostanay("Asia/Qostanay"),
     Asia_Qyzylorda("Asia/Qyzylorda"),
     Asia_Rangoon("Asia/Rangoon"),
     Asia_Riyadh("Asia/Riyadh"),
