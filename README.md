@@ -1,12 +1,16 @@
 # Time Based Deny Authentication Action
 
 [![Build Status](https://travis-ci.org/curityio/time-authentication-action.svg?branch=master)](https://travis-ci.org/curityio/time-authentication-action)
+[![Quality](https://curity.io/assets/images/badges/time-authentication-action-quality.svg)](https://curity.io/resources/code-examples/status/)
+[![Availability](https://curity.io/assets/images/badges/time-authentication-action-availability.svg)](https://curity.io/resources/code-examples/status/)
 
 This repository contains two plugins for time based Actions in the Authentication flow.
 
 ## System Requirements
 
 Curity Identity Server 5.0.0 or later and its [system requirements](https://developer.curity.io/docs/latest/system-admin-guide/system-requirements.html).
+
+**Note**: Make sure that Java 8 is installed and `JAVA_HOME` is set properly.
 
 ## Build and deploy the Plugins
 
