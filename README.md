@@ -1,8 +1,8 @@
 # Time Based Deny Authentication Action
 
 [![Build Status](https://travis-ci.org/curityio/time-authentication-action.svg?branch=master)](https://travis-ci.org/curityio/time-authentication-action)
-[![Quality](https://curity.io/assets/images/badges/time-authentication-action-quality.svg)](https://curity.io/resources/code-examples/status/)
-[![Availability](https://curity.io/assets/images/badges/time-authentication-action-availability.svg)](https://curity.io/resources/code-examples/status/)
+[![Quality](https://img.shields.io/badge/quality-production-green)](https://curity.io/resources/code-examples/status/)
+[![Availability](https://img.shields.io/badge/availability-bundled-green)](https://curity.io/resources/code-examples/status/)
 
 This repository contains two plugins for time based Actions in the Authentication flow.
 
