@@ -29,6 +29,12 @@ public final class DateDenyAuthenticationActionPluginDescriptor
     }
 
     @Override
+    public Class<? extends AuthenticationAction> getBackchannelAuthenticationAction()
+    {
+        return DateDenyAuthenticationAction.class;
+    }
+
+    @Override
     public String getPluginImplementationType()
     {
         return "date-time-deny";

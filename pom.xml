@@ -20,12 +20,12 @@
 
     <groupId>io.curity.identityserver.plugin</groupId>
     <artifactId>identityserver.plugins.authenticationactions.time</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
     <name>Time Based Authentication Action</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.curityVersion>5.0.0</project.curityVersion>
+        <project.curityVersion>6.2.0</project.curityVersion>
         <libraries.directory>${project.build.directory}/usr/share/plugins/authenticationactions.timedeny</libraries.directory>
     </properties>
 
@@ -100,7 +100,6 @@
             <version>1.7.22</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
@@ -109,12 +108,11 @@
         </dependency>
     </dependencies>
 
-    <repositories>
-      <repository>
-          <id>curity-release-repo</id>
-          <name>Curity Nexus Release Repository</name>
-          <url>https://nexus.curity.se/nexus/content/repositories/customer-release-repo/</url>
-      </repository>
-    </repositories>
-
+    <distributionManagement>
+        <snapshotRepository>
+            <id>customer-snapshot-repo</id>
+            <name>Curity Nexus Snapshot Repository</name>
+            <url>https://nexus.curityio.net/repository/customer-snapshot-repo/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

@@ -29,6 +29,12 @@ public final class TimeDenyAuthenticationActionPluginDescriptor
     }
 
     @Override
+    public Class<? extends AuthenticationAction> getBackchannelAuthenticationAction()
+    {
+        return TimeDenyAuthenticationAction.class;
+    }
+
+    @Override
     public String getPluginImplementationType()
     {
         return "time-deny";
