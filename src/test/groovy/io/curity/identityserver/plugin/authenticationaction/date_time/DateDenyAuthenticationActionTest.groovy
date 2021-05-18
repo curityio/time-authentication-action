@@ -40,9 +40,9 @@ class DateDenyAuthenticationActionTest extends Specification {
             loginTime.minus(1, ChronoUnit.HOURS) | TimeZoneDisplay.SYSTEM_TIME    | DateDenyAuthenticationActionConfiguration.When.AFTER  | false //no access after time stamp in past
             loginTime.plus(1, ChronoUnit.HOURS)  | TimeZoneDisplay.SYSTEM_TIME    | DateDenyAuthenticationActionConfiguration.When.AFTER  | true  //no access after time stamp in future
             loginTime.minus(1, ChronoUnit.DAYS)  | TimeZoneDisplay.SYSTEM_TIME    | DateDenyAuthenticationActionConfiguration.When.BEFORE | true //no access until time stamp in past
-            loginTime.plus(2, ChronoUnit.DAYS)   | TimeZoneDisplay.US_Pacific_New | DateDenyAuthenticationActionConfiguration.When.BEFORE | false //no access until time stamp in future
-            loginTime.plus(1, ChronoUnit.HOURS)  | TimeZoneDisplay.US_Pacific_New | DateDenyAuthenticationActionConfiguration.When.AFTER  | true //no access after time stamp in future (config in different time zone)
-            loginTime.minus(1, ChronoUnit.HOURS) | TimeZoneDisplay.US_Pacific_New | DateDenyAuthenticationActionConfiguration.When.BEFORE | true //no access until time stamp in past (config in different time zone)
+            loginTime.plus(2, ChronoUnit.DAYS)   | TimeZoneDisplay.US_Pacific     | DateDenyAuthenticationActionConfiguration.When.BEFORE | false //no access until time stamp in future
+            loginTime.plus(1, ChronoUnit.HOURS)  | TimeZoneDisplay.Australia_ACT  | DateDenyAuthenticationActionConfiguration.When.AFTER  | true //no access after time stamp in future (config in different time zone)
+            loginTime.minus(1, ChronoUnit.HOURS) | TimeZoneDisplay.US_Eastern     | DateDenyAuthenticationActionConfiguration.When.BEFORE | true //no access until time stamp in past (config in different time zone)
     }
 
     DateDenyAuthenticationActionConfiguration dc(Instant timeStamp, TimeZoneDisplay configTimeZone, DateDenyAuthenticationActionConfiguration.When when) {

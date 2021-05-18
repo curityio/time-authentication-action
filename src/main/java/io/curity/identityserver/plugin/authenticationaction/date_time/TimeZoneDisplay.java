@@ -582,7 +582,6 @@ public enum TimeZoneDisplay
     US_Michigan("US/Michigan"),
     US_Mountain("US/Mountain"),
     US_Pacific("US/Pacific"),
-    US_Pacific_New("US/Pacific-New"),
     US_Samoa("US/Samoa"),
     UTC("UTC"),
     Universal("Universal"),

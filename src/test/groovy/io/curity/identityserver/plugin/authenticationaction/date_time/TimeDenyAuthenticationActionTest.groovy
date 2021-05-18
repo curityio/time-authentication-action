@@ -38,11 +38,11 @@ class TimeDenyAuthenticationActionTest extends Specification {
         where:
             notBefore                              | notAfter                               | timeZone                       | success | message
             loginTime.minus(1, ChronoUnit.HOURS)   | loginTime.plus(1, ChronoUnit.HOURS)    | TimeZoneDisplay.SYSTEM_TIME    | true    | "Authentication between notBefore and notAfter"
-            loginTime.minus(1, ChronoUnit.HOURS)   | loginTime.plus(1, ChronoUnit.HOURS)    | TimeZoneDisplay.US_Pacific_New | true    | "Authentication between notBefore and notAfter, configuration in different time zone"
+            loginTime.minus(1, ChronoUnit.HOURS)   | loginTime.plus(1, ChronoUnit.HOURS)    | TimeZoneDisplay.US_Pacific     | true    | "Authentication between notBefore and notAfter, configuration in different time zone"
             loginTime.plus(1, ChronoUnit.MINUTES)  | loginTime.plus(2, ChronoUnit.MINUTES)  | TimeZoneDisplay.SYSTEM_TIME    | false   | "Authentication before notBefore"
-            loginTime.plus(1, ChronoUnit.MINUTES)  | loginTime.plus(2, ChronoUnit.MINUTES)  | TimeZoneDisplay.US_Pacific_New | false   | "Authentication before notBefore, configuration in different time zone"
+            loginTime.plus(1, ChronoUnit.MINUTES)  | loginTime.plus(2, ChronoUnit.MINUTES)  | TimeZoneDisplay.US_Pacific     | false   | "Authentication before notBefore, configuration in different time zone"
             loginTime.minus(2, ChronoUnit.MINUTES) | loginTime.minus(1, ChronoUnit.MINUTES) | TimeZoneDisplay.SYSTEM_TIME    | false   | "Authentication after notAfter"
-            loginTime.minus(2, ChronoUnit.MINUTES) | loginTime.minus(1, ChronoUnit.MINUTES) | TimeZoneDisplay.US_Pacific_New | false   | "Authentication after notAfter, configuration in different time zone"
+            loginTime.minus(2, ChronoUnit.MINUTES) | loginTime.minus(1, ChronoUnit.MINUTES) | TimeZoneDisplay.US_Pacific     | false   | "Authentication after notAfter, configuration in different time zone"
     }
 
     private TimeDenyAuthenticationActionConfiguration tdc(Instant notBefore, Instant notAfter, TimeZoneDisplay timezone) {
