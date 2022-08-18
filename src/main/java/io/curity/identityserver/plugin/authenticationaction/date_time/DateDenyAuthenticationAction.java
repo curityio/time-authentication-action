@@ -18,11 +18,9 @@ package io.curity.identityserver.plugin.authenticationaction.date_time;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.curity.identityserver.sdk.attribute.AuthenticationAttributes;
-import se.curity.identityserver.sdk.authentication.AuthenticatedSessions;
 import se.curity.identityserver.sdk.authenticationaction.AuthenticationAction;
+import se.curity.identityserver.sdk.authenticationaction.AuthenticationActionContext;
 import se.curity.identityserver.sdk.authenticationaction.AuthenticationActionResult;
-import se.curity.identityserver.sdk.service.authenticationaction.AuthenticatorDescriptor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,10 +42,7 @@ public final class DateDenyAuthenticationAction implements AuthenticationAction
     }
 
     @Override
-    public AuthenticationActionResult apply(AuthenticationAttributes authenticationAttributes,
-                                            AuthenticatedSessions authenticatedSessions,
-                                            String authenticationTransactionId,
-                                            AuthenticatorDescriptor authenticatorDescriptor)
+    public AuthenticationActionResult apply(AuthenticationActionContext context)
     {
         ZoneId zoneId = getZoneId(_configuration.getTimeZone());
 
@@ -74,7 +69,7 @@ public final class DateDenyAuthenticationAction implements AuthenticationAction
         {
             _logger.trace("Access allowed based on date and time");
 
-            return AuthenticationActionResult.successfulResult(authenticationAttributes);
+            return AuthenticationActionResult.successfulResult(context.getAuthenticationAttributes());
         }
 
         return AuthenticationActionResult.failedResult("Access denied based on date and time");
