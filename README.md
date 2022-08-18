@@ -34,7 +34,7 @@ After` denotes the end point on the same day.
 
 ### Deny based on a given date and time
 * Create an Action of type `Date Time Deny`
-* Add the action to the authenticator as a login action.
+* Add the Action to the authenticator as a Login Action.
 * Set `Date and Time`.
 * Choose if access should be denied before or after the configured date and time.
 
