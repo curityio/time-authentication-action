@@ -1,6 +1,5 @@
 # Time Based Deny Authentication Action
 
-[![Build Status](https://travis-ci.com/curityio/time-authentication-action.svg?branch=master)](https://travis-ci.com/curityio/time-authentication-action)
 [![Quality](https://img.shields.io/badge/quality-production-green)](https://curity.io/resources/code-examples/status/)
 [![Availability](https://img.shields.io/badge/availability-bundled-green)](https://curity.io/resources/code-examples/status/)
 
@@ -48,4 +47,4 @@ This plugin and its associated documentation is listed under the [Apache 2 licen
 
 Please visit [curity.io](https://curity.io/) for more information about the Curity Identity Server.
 
-Copyright (C) 2022 Curity AB.
+Copyright (C) 2020 Curity AB.
