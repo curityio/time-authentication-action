@@ -18,11 +18,9 @@ package io.curity.identityserver.plugin.authenticationaction.date_time;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.curity.identityserver.sdk.attribute.AuthenticationAttributes;
-import se.curity.identityserver.sdk.authentication.AuthenticatedSessions;
 import se.curity.identityserver.sdk.authenticationaction.AuthenticationAction;
+import se.curity.identityserver.sdk.authenticationaction.AuthenticationActionContext;
 import se.curity.identityserver.sdk.authenticationaction.AuthenticationActionResult;
-import se.curity.identityserver.sdk.service.authenticationaction.AuthenticatorDescriptor;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -30,7 +28,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 
 public final class TimeDenyAuthenticationAction implements AuthenticationAction
 {
@@ -45,10 +42,7 @@ public final class TimeDenyAuthenticationAction implements AuthenticationAction
     }
 
     @Override
-    public AuthenticationActionResult apply(AuthenticationAttributes authenticationAttributes,
-                                            AuthenticatedSessions authenticatedSessions,
-                                            String authenticationTransactionId,
-                                            AuthenticatorDescriptor authenticatorDescriptor)
+    public AuthenticationActionResult apply(AuthenticationActionContext context)
     {
         if (_timeComparer.isNowAfterStartTime())
         {
@@ -56,7 +50,7 @@ public final class TimeDenyAuthenticationAction implements AuthenticationAction
             {
                 _logger.debug("Access allowed based on time");
 
-                return AuthenticationActionResult.successfulResult(authenticationAttributes);
+                return AuthenticationActionResult.successfulResult(context.getAuthenticationAttributes());
             }
             else if (_logger.isDebugEnabled())
             {

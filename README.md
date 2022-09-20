@@ -1,6 +1,5 @@
 # Time Based Deny Authentication Action
 
-[![Build Status](https://travis-ci.org/curityio/time-authentication-action.svg?branch=master)](https://travis-ci.org/curityio/time-authentication-action)
 [![Quality](https://img.shields.io/badge/quality-production-green)](https://curity.io/resources/code-examples/status/)
 [![Availability](https://img.shields.io/badge/availability-bundled-green)](https://curity.io/resources/code-examples/status/)
 
@@ -8,9 +7,9 @@ This repository contains two plugins for time based Actions in the Authenticatio
 
 ## System Requirements
 
-Curity Identity Server 5.0.0 or later and its [system requirements](https://developer.curity.io/docs/latest/system-admin-guide/system-requirements.html).
+Curity Identity Server 7.3.0 or later and its [system requirements](https://developer.curity.io/docs/latest/system-admin-guide/system-requirements.html).
 
-**Note**: Make sure that Java 8 is installed and `JAVA_HOME` is set properly.
+**Note**: Make sure that Java 17 is installed and `JAVA_HOME` is set properly.
 
 ## Build and deploy the Plugins
 
@@ -34,7 +33,7 @@ After` denotes the end point on the same day.
 
 ### Deny based on a given date and time
 * Create an Action of type `Date Time Deny`
-* Add the action to the authenticator as a login action.
+* Add the Action to the authenticator as a Login Action.
 * Set `Date and Time`.
 * Choose if access should be denied before or after the configured date and time.
 
