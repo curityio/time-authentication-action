@@ -22,7 +22,7 @@ class TimeDenyAuthenticationActionTest extends Specification {
             TimeDenyAuthenticationAction actionToTest = new TimeDenyAuthenticationAction(config);
 
         when:
-        AuthenticationActionResult result = actionToTest.apply(null, null, null, null);
+        AuthenticationActionResult result = actionToTest.apply(MockAuthenticationActionContext.createMockAuthenticationActionContext());
 
         then:
             DateTimeFormatter simpleTime = DateTimeFormatter.ofPattern("HH:mm");
