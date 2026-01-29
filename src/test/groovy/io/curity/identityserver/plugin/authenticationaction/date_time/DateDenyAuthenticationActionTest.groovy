@@ -21,7 +21,7 @@ class DateDenyAuthenticationActionTest extends Specification {
         DateDenyAuthenticationAction action = new DateDenyAuthenticationAction(config);
 
         when: "Authentication is checked against action configuration"
-        AuthenticationActionResult result = action.apply(null, null, null, null);
+        AuthenticationActionResult result = action.apply(MockAuthenticationActionContext.createMockAuthenticationActionContext());
 
 
         then: "Allow or deny authentication as expected"
